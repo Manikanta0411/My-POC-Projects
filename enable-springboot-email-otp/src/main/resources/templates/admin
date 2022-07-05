@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+	<title>SpringBoot -OTP ::admin page</title>
+    <div th:replace="header :: header-css"/>
+</head>
+<body>
+
+<div th:replace="header :: header"/>
+
+<div class="container">
+
+    <div class="starter-template">
+        <h1>Admin page (Spring Security protected)</h1>
+
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+        <form id="generateOtp" name="generateOtp" method="get">
+      	<span sec:authorize="isAuthenticated()">
+	                | Logged user: <span sec:authentication="name"></span> |
+	                Roles: <span sec:authentication="principal.authorities"></span> |
+	                <a th:href="@{/dashboard}">Back</a>
+	     </span>
+	    <div>
+		 One Time Password : <a th:href="@{/generateOtp}"><b>SEND OTP</b></a>
+		 </div>
+                     
+
+    </div>
+  </form>
+</div> 
+<script type="text/javascript"
+		src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript"
+        src="webjars/jquery/2.2.4/jquery.min.js"></script>
+
+	
+	<script type="text/javascript">
+	$(document).ready(function () {
+
+	    $("#generateOtp").submit(function (event) {
+
+	        //stop submit the form, we will post it manually.
+	       // event.preventDefault();
+
+	       var url = '/generateOtp/'+$("#emailId").val();
+	       alert(url);
+	        alert(url);
+	        $.ajax({
+	            type: "GET",
+	            url:  url,
+	            dataType: 'text',
+	            cache: false,
+	            timeout: 600000,
+	            success : function(response) {
+                    alert( response );
+                },
+                error : function(xhr, status, error) {
+                    alert(xhr.responseText);
+                }
+	        });
+	    });
+
+	});
+
+	 
+	</script>
+
+
+</body>
+</html>
